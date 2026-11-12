@@ -359,9 +359,12 @@ moveCursorP1:
    push rax
    push rbx
    
-   
-   mov eax, DWORD [pos]
+  
    mov al, BYTE [charac]
+   mov eax, DWORD[pos]
+   mov ecx, DimMatrix
+   
+   div ecx			; divison eax/ecx -- eax fila edx columna
    
    ; Eleccion de direccion
    cmp bl,'i'
@@ -380,12 +383,36 @@ moveCursorP1:
    
    
    move_up:
-	
-	
+	cmp eax,1
+	jl moveCursorP1_end
+	sub eax, 1
+	imul eax, 5
+	add eax, edx
+	mov DWORD [pos], eax
 	
    move_down:
+    cmp eax,4
+    jge moveCursorP1_end
+    add eax,1
+    imul eax, 5
+	add eax, edx
+	mov DWORD [pos], eax
+   
    move_left:
+    cmp edx,1
+	jl moveCursorP1_end
+	sub edx, 1
+	imul eax, 5
+	add eax, edx
+	mov DWORD [pos], eax
+	
    move_right:
+    cmp edx,4
+	jge moveCursorP1_end
+	add edx, 1
+	imul eax, 5
+	add eax, edx
+	mov DWORD [pos], eax
 
    moveCursorP1_end:
    ;restaurar el estado de los registros que se han guardado en la pila.
