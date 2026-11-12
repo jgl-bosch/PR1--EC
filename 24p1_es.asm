@@ -453,11 +453,20 @@ searchSpaceNextToP1:
    mov  rbp, rsp
    ;guardar el estado de los registros que se modifican en esta 
    ;subrutina y que no se utilizan para devolver valores.               
-   
+   push rax
+   push rbx
+   push rcx
+   push rdx
+   push rsi
        
 
    searchSpaceNextToP2_end:
 
+   pop rsi
+   pop rdx
+   pop rcx
+   pop rbx
+   pop rax
    ;restaurar el estado de los registros que se han guardado en la pila.
    mov rsp, rbp
    pop rbp
