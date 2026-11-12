@@ -311,6 +311,8 @@ posCurScreenP1:
    ;subrutina y que no se utilizan para devolver valores.
    push rax
    push rbx
+   push rcx
+   push rdx
    
    mov eax, DWORD[pos]
    mov ecx, DimMatrix
@@ -331,6 +333,8 @@ posCurScreenP1:
    
    posCurScreenP1_end:
    ;restaurar el estado de los registros que se han guardado en la pila.  
+   pop rdx
+   pop rcx
    pop rbx
    pop rax
    
@@ -358,7 +362,8 @@ moveCursorP1:
    ;subrutina y que no se utilizan para devolver valores.
    push rax
    push rbx
-   
+   push rcx
+   push rdx
   
    mov al, BYTE [charac]
    mov eax, DWORD[pos]
@@ -416,7 +421,8 @@ moveCursorP1:
 
    moveCursorP1_end:
    ;restaurar el estado de los registros que se han guardado en la pila.
-   
+   pop rdx
+   pop rcx
    pop rbx
    pop rax
    
