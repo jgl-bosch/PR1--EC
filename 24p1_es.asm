@@ -466,6 +466,29 @@ searchSpaceNextToP1:
    mov ecx, DimMatrix
    div ecx			; divison eax/ecx -- eax fila edx columna
    
+   look_up:
+	cmp eax, 0
+	jle look_right
+	
+	sub eax, 1
+	mul eax, DimMatrix
+	add eax, edx
+	
+	; comprueba si hay espacio vacio
+	mov edx, BYTE [tiles + eax]
+	cmp edx, " "
+	jne look_down
+	
+	; modificamos la posicion en el espacio
+	mov esi, DWORD [pos]
+	sub esi, DimMatrix
+	mov DWORD [spacePos], esi
+	
+   look_down:
+	cmp eax, DimMatrix
+	j
+   look_right:
+   look_left:
 
    searchSpaceNextToP2_end:
 
