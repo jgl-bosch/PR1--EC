@@ -485,8 +485,26 @@ searchSpaceNextToP1:
 	mov DWORD [spacePos], esi
 	
    look_down:
-	cmp eax, DimMatrix
-	j
+	mov ebx, DimMatrix
+	sub ebx, 1
+	cmp eax, ebx
+	jge look_right
+	
+	add eax,1
+	mul eax, DimMatrix
+	add eax, edx
+	
+	; Comprueba si hay espacio vacio
+	mov edx, DWORD [tiles + eax]
+	cmp edx, " "
+	jne look_right
+	
+	; Modificamos la posicion en el espacio
+	mov esi, DWORD [pos]
+	add esi, DimMatrix
+	mov DWORD [spacePos], esi
+	
+	
    look_right:
    look_left:
 
