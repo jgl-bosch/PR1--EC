@@ -457,8 +457,15 @@ searchSpaceNextToP1:
    push rbx
    push rcx
    push rdx
-   push rsi
-       
+   
+   mov eax, SizeMatrix		;spacePos=SizeMatrix
+   mov DWORD [spacePos]  
+   
+   ; Row & col
+   mov eax, DWORD [pos]  
+   mov ecx, DimMatrix
+   div ecx			; divison eax/ecx -- eax fila edx columna
+   
 
    searchSpaceNextToP2_end:
 
