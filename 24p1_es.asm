@@ -252,7 +252,7 @@ updateBoardP1:
 	imul rbx, DimMatrix
 	add rbx, rdi
    
-	mov al, BYTE [tiles + rax]
+	mov al, BYTE [tiles + rbx]
 	mov BYTE [charac], al		; almacenar el caracter de la matriz
 	
 	call gotoxyP1
@@ -274,15 +274,14 @@ updateBoardP1:
    mov DWORD [rowScreen], 21  
    mov DWORD [colScreen], 28 
 
-   mov eax, WORD [moves]
+   mov eax, DWORD [moves]
    add al, "0"
    mov BYTE[charac], al
 	
    call gotoxyP1
 	
    call printchP1
-   
-   jmp updateBoardP1_end
+
       
    updateBoardP1_end:
    ;restaurar el estado de los registros que se han guardado en la pila.
