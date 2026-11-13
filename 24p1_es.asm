@@ -464,7 +464,7 @@ searchSpaceNextToP1:
    push rsi
    
    mov eax, SizeMatrix		;spacePos=SizeMatrix
-   mov DWORD [spacePos]  
+   mov DWORD [spacePos], eax  
    
    ; Row & col
    mov eax, DWORD [pos]  
@@ -476,11 +476,11 @@ searchSpaceNextToP1:
 	jle look_right
 	
 	sub eax, 1
-	mul eax, DimMatrix
+	imul eax, DimMatrix
 	add eax, edx
 	
 	; comprueba si hay espacio vacio
-	mov edx, BYTE [tiles + eax]
+	mov edx, DWORD [tiles + eax]
 	cmp edx, " "
 	jne look_down
 	
@@ -496,7 +496,7 @@ searchSpaceNextToP1:
 	jge look_right
 	
 	add eax,1
-	mul eax, DimMatrix
+	imul eax, DimMatrix
 	add eax, edx
 	
 	; Comprueba si hay espacio vacio
@@ -517,7 +517,7 @@ searchSpaceNextToP1:
 	jge look_left
 	
 	add edx,1
-	mul eax, DimMatrix
+	imul eax, DimMatrix
 	add eax, edx
    
    	; Comprueba si hay espacio vacio
@@ -535,7 +535,7 @@ searchSpaceNextToP1:
 	jle searchSpaceNextToP2_end
 	
 	sub edx, 1
-	mult eax, DimMatrix
+	imul eax, DimMatrix
 	add eax, edx
 	
 	; Comprueba si hay espacio vacio
