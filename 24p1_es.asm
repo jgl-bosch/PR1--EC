@@ -248,9 +248,9 @@ updateBoardP1:
     
    matrix_loop_col:
    
-	mov rax, rsi
-	imul rax, DimMatrix
-	add rax, rdi
+	mov rbx, rsi
+	imul rbx, DimMatrix
+	add rbx, rdi
    
 	mov al, BYTE [tiles + rax]
 	mov BYTE [charac], al		; almacenar el caracter de la matriz
@@ -274,8 +274,9 @@ updateBoardP1:
    mov DWORD [rowScreen], 21  
    mov DWORD [colScreen], 28 
 
-   mov ax, WORD [moves]
-   add ax, "0"
+   mov eax, WORD [moves]
+   add al, "0"
+   mov BYTE[charac], al
 	
    call gotoxyP1
 	
