@@ -235,46 +235,53 @@ updateBoardP1:
    push rsi
    push rdi
 
-   mov rsi, 0		; indice filas
-   mov rdi, 0		; indice columnas
+   mov rsi, 0		; indice row
+   mov rdi, 0 		;indice col
    
-   mov DWORD [rowScreen], 10  ;posicion fila , tipo int
-   mov DWORD [colScreen], 12 	;posicion columna, tipo in
+   mov DWORD [rowScreen],10  ;posicion fila , tipo int
+   mov DWORD [colScreen],12 	;posicion columna, tipo in
 
    ; Recorrer los valores de la matriz
-   matrix_loop:
-	
-	mov al, BYTE [tiles + rsi + rdi]
+   matrix_loop_row:
+    mov rdi, 0
+    mov DWORD [colScreen],12
+    
+   matrix_loop_col:
+   
+	mov rax, rsi
+	imul rax, DimMatrix
+	add rax, rdi
+   
+	mov al, BYTE [tiles + rax]
 	mov BYTE [charac], al		; almacenar el caracter de la matriz
 	
 	call gotoxyP1
-	
 	call printchP1
 	
 	inc rdi
 	add DWORD [colScreen], 4	; espaciado columnas
 	
 	cmp rdi, DimMatrix	
-	jl matrix_loop
-	
-	mov rdi, 0 
-	
-	add rsi, DimMatrix		; cambio a siguiente fila
-	mov DWORD [colScreen], 12 	;posicion columna, tipo in
+	jl matrix_loop_col 
 	
 	add DWORD [rowScreen], 2		; espaciado filas
+	inc rsi		; cambio a siguiente fila
 	
-	cmp rsi, SizeMatrix
-	jl matrix_loop
 	
-	mov DWORD [rowScreen], 21  
-    mov DWORD [colScreen], 28 
+	cmp rsi, DimMatrix
+	jl matrix_loop_row
+	
+   mov DWORD [rowScreen], 21  
+   mov DWORD [colScreen], 28 
 
-	mov ax, WORD [moves]
+   mov ax, WORD [moves]
+   add ax, "0"
 	
-	call gotoxyP1
+   call gotoxyP1
 	
-	call printchP1
+   call printchP1
+   
+   jmp updateBoardP1_end
       
    updateBoardP1_end:
    ;restaurar el estado de los registros que se han guardado en la pila.
@@ -316,7 +323,6 @@ posCurScreenP1:
    
    mov eax, DWORD[pos]
    mov ecx, DimMatrix
-   
    div ecx			; divison eax/ecx -- eax cociente edx resto
    
    ;rowScreen   
