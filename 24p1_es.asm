@@ -270,7 +270,7 @@ updateBoardP1:
 	mov DWORD [rowScreen], 21  
     mov DWORD [colScreen], 28 
 
-	mov al, WORD [moves]
+	mov ax, WORD [moves]
 	
 	call gotoxyP1
 	
@@ -365,7 +365,7 @@ moveCursorP1:
    push rcx
    push rdx
   
-   mov al, BYTE [charac]
+   mov bl, BYTE [charac]
    mov eax, DWORD[pos]
    mov ecx, DimMatrix
    
@@ -394,6 +394,7 @@ moveCursorP1:
 	imul eax, 5
 	add eax, edx
 	mov DWORD [pos], eax
+	jmp moveCursorP1_end
 	
    move_down:
     cmp eax,4
@@ -402,6 +403,7 @@ moveCursorP1:
     imul eax, 5
 	add eax, edx
 	mov DWORD [pos], eax
+	jmp moveCursorP1_end
    
    move_left:
     cmp edx,1
@@ -410,6 +412,7 @@ moveCursorP1:
 	imul eax, 5
 	add eax, edx
 	mov DWORD [pos], eax
+	jmp moveCursorP1_end
 	
    move_right:
     cmp edx,4
@@ -418,6 +421,7 @@ moveCursorP1:
 	imul eax, 5
 	add eax, edx
 	mov DWORD [pos], eax
+	jmp moveCursorP1_end
 
    moveCursorP1_end:
    ;restaurar el estado de los registros que se han guardado en la pila.
@@ -582,11 +586,39 @@ moveTileP1:
    mov  rbp, rsp
    ;guardar el estado de los registros que se modifican en esta 
    ;subrutina y que no se utilizan para devolver valores.
+   push rax
+   push rbx
+   push rcx
+   push rdx
    
+   call searchSpaceNextToP1
+   
+   cmp DWORD [spacePos], SizeMatrix
+   je no_move
+   
+   mov eax, DWORD[pos]
+   mov ebx, DWORD[spacePos]
+   
+   ;valores posiciones
+   mov cl, BYTE[tiles + eax]
+   mov dl, BYTE[tiles + ebx]
+   
+   ;cambiar posiciones
+   mov BYTE[tiles + eax], dl
+   mov BYTE[tiles + ebx], cl
+   
+   jmp moveTileP2_End
+   
+   no_move:
+	mov BYTE[state], 2
    
 
    moveTileP2_End:
    
+   pop rdx
+   pop rcx
+   pop rbx
+   pop rax
    ;restaurar el estado de los registros que se han guardado en la pila.
    mov rsp, rbp
    pop rbp
