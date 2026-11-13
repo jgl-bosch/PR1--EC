@@ -640,6 +640,10 @@ checkEndP1:
    ;guardar el estado de los registros que se modifican en esta 
    ;subrutina y que no se utilizan para devolver valores.
    
+   cmp WORD[moves], 0
+   jne checkEndP1_end
+   
+   mov BYTE [state], 3
    
    
    checkEndP1_end:
