@@ -457,6 +457,7 @@ searchSpaceNextToP1:
    push rbx
    push rcx
    push rdx
+   push rsi
    
    mov eax, SizeMatrix		;spacePos=SizeMatrix
    mov DWORD [spacePos]  
@@ -526,6 +527,22 @@ searchSpaceNextToP1:
 	mov DWORD [spacePos], esi
    
    look_left:
+	cmp edx, 0
+	jle searchSpaceNextToP2_end
+	
+	sub edx, 1
+	mult eax, DimMatrix
+	add eax, edx
+	
+	; Comprueba si hay espacio vacio
+	mov ecx, DWORD [tiles + eax]
+	cmp ecx, " "
+	jne searchSpaceNextToP2_end
+	
+	; Modificamos la posicion en el espacio
+	mov esi, DWORD [pos]
+	sub esi, 1
+	mov DWORD [spacePos], esi
 
    searchSpaceNextToP2_end:
 
